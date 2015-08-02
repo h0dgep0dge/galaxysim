@@ -1,0 +1,26 @@
+<html>
+  <body>
+    <svg width=2000 height=2000 id=window></svg>
+    <script src='galaxy.js'></script>
+    <script>
+      var earth = new galaxySim.planet({x:384400000+38440000,y:384400000+38440000},{x:0,y:0},5.972 * Math.pow(10,24),6371000);
+      var moon = new galaxySim.planet({x:38440000,y:384400000+38440000},{x:0,y:-1023},7.34767309 * Math.pow(10,22),1737000);
+
+      var gravity = new galaxySim.gravity(6.674 * Math.pow(10,-11));
+      gravity.gravitateList([earth,moon]);
+
+      var d = new galaxySim.SVGDrawer(document.getElementById('window'));
+      var s = new galaxySim.scaledDrawer(d,500000);
+      var cont = new galaxySim.controller();
+      cont.addDrawerList([earth,moon]);
+      cont.addStepperList([earth,moon,gravity]);
+      var superstep = function () {
+          s.clear();
+          cont.step(60*30);
+          cont.draw(s);
+          window.requestAnimationFrame(superstep);
+      };
+      superstep();
+    </script>
+  </body>
+</html>
