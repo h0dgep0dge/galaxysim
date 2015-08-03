@@ -69,20 +69,32 @@ module galaxySim {
    }
 
    export class scaledDrawer implements drawer {
-      constructor(private parent:drawer,private scale:number) {}
+        constructor(private parent:drawer,private scale:number) {}
 
-      circle(center:coords2d,radius:number,colour:string):void {
-          this.parent.circle(vector2d.div(center,this.scale),radius/this.scale,colour);
-      }
+        circle(center:coords2d,radius:number,colour:string):void {
+            this.parent.circle(vector2d.div(center,this.scale),radius/this.scale,colour);
+        }
 
-      line(endpoints:coords2d[],weight:number,colour:string):void {
-          this.parent.line([vector2d.div(endpoints[0],this.scale),vector2d.div(endpoints[1],this.scale)],weight,colour);
-      }
+        line(endpoints:coords2d[],weight:number,colour:string):void {
+            this.parent.line([vector2d.div(endpoints[0],this.scale),vector2d.div(endpoints[1],this.scale)],weight,colour);
+        }
 
-      clear() {this.parent.clear();}
-  }
+        clear() {this.parent.clear();}
+    }
 
+    export class offsetDrawer implements drawer {
+        constructor(private parent:drawer,private offset:vector2d) {}
 
+        circle(center:coords2d,radius:number,colour:string):void {
+            this.parent.circle(vector2d.sum(center,this.offset),radius,colour);
+        }
+
+        line(endpoints:coords2d[],weight:number,colour:string):void {
+            this.parent.line([vector2d.sum(endpoints[0],this.offset),vector2d.sum(endpoints[1],this.offset)],weight,colour);
+        }
+
+        clear() {this.parent.clear();}
+    }
 
     export class pointObj implements drawable,physObj {
         getLoc():coords2d {
