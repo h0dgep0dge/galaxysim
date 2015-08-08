@@ -202,4 +202,19 @@ module galaxySim {
                 }
         }
     }
+
+    export class drag implements steppable {
+        private objs:physObj[] = [];
+        constructor(private frictionalConstant:number) {}
+
+        drag(s:physObj) {this.objs.push(s);}
+        dragList(s:physObj[]) {for(var i = 0;i < s.length;i++) this.drag(s[i]);}
+
+        step(time:number) {
+            for(var a = 0;a < this.objs.length;a++) {
+                var f = vector2d.times(-this.frictionalConstant,this.objs[a].getVelocity());
+                this.objs[a].accelerate(f,time);
+            }
+        }
+    }
 }
