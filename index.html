@@ -3,6 +3,8 @@
     <svg width=2000 height=2000 id=window></svg>
     <script src='galaxy.js'></script>
     <script>
+      var clear = true;
+      var mult = 1;
       var earth = new galaxySim.planet({x:-100000000,y:0},{x:0,y:1645.75447329/2},5.972 * Math.pow(10,24),6371000);
       var mearth = new galaxySim.planet({x:100000000,y:0},{x:0,y:-1645.75447329/2},5.972 * Math.pow(10,24),6371000);
       //var moon = new galaxySim.planet({x:0,y:384400000},{x:1023,y:0},7.34767309 * Math.pow(10,22),1737000);
@@ -10,7 +12,7 @@
       var gravity = new galaxySim.gravity(6.674 * Math.pow(10,-11));
       gravity.gravitateList([earth,mearth]);
 
-      var drag = new galaxySim.drag(Math.pow(10,17));
+      var drag = new galaxySim.drag(Math.pow(10,18));
       //var drag = new galaxySim.drag(Math.pow(10,0));
       drag.dragList([earth,mearth]);
 
@@ -21,7 +23,7 @@
       cont.addDrawerList([earth,mearth]);
       cont.addStepperList([earth,mearth,drag,gravity]);
       var superstep = function () {
-          s.clear();
+          if(clear) s.clear();
           for(var i = 0;i < 30;i++) for(var a = 0;a < 60;a++) cont.step(1);
           //cont.step(30*60);
           cont.draw(s);
